@@ -2,12 +2,14 @@ import { supabase } from '@/lib/supabase';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 import {
+  Keyboard,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -21,25 +23,28 @@ export default function LoginScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <KeyboardAvoidingView
-        style={styles.container}
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      >
-        <Text style={styles.title}>Ingresar</Text>
+      {/* Detecta toque fuera del input y cierra teclado */}
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <KeyboardAvoidingView
+          style={styles.container}
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        >
+          <Text style={styles.title}>Ingresar</Text>
 
-        <TextInput
-          value={email}
-          onChangeText={setEmail}
-          placeholder='Email'
-          keyboardType='email-address'
-          autoCapitalize='none'
-          style={styles.input}
-        />
+          <TextInput
+            value={email}
+            onChangeText={setEmail}
+            placeholder='Email'
+            keyboardType='email-address'
+            autoCapitalize='none'
+            style={styles.input}
+          />
 
-        <TouchableOpacity onPress={handleLogin} style={styles.button}>
-          <Text style={styles.buttonText}>Continuar</Text>
-        </TouchableOpacity>
-      </KeyboardAvoidingView>
+          <TouchableOpacity onPress={handleLogin} style={styles.button}>
+            <Text style={styles.buttonText}>Continuar</Text>
+          </TouchableOpacity>
+        </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
     </SafeAreaView>
   );
 }
